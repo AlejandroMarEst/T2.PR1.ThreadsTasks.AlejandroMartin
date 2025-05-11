@@ -10,11 +10,13 @@ namespace T2.PR1.Tasks.AlejandroMartin
         public static Stopwatch sw = new Stopwatch();
         public static Entity spaceship = new Entity { CoordX = windowSize.CoordX/2, CoordY = windowSize.CoordY - 1 };
         public static bool gameover = false;
-        public static object _locker = new object();
+        public readonly static object _locker = new object();
+        public static List<Entity> meteorites = new List<Entity>();
         public static async Task Main()
         {
             sw.Start();
             LoadConfig();
+            Task.Run(UpdateAsteroids);
             Task.Run(ControllSpaceship);
             while (!gameover)
             {
@@ -34,6 +36,11 @@ namespace T2.PR1.Tasks.AlejandroMartin
                 Console.Clear();
                 Console.SetCursorPosition(spaceship.CoordX, spaceship.CoordY);
                 Console.Write("^");
+                foreach (var meteorite in meteorites)
+                {
+                    Console.SetCursorPosition(meteorite.CoordX, meteorite.CoordY);
+                    Console.Write("#");
+                }
             }
         }
         public static async Task ControllSpaceship()
@@ -54,6 +61,36 @@ namespace T2.PR1.Tasks.AlejandroMartin
                     gameover = true;
                 }
                 await Task.Delay(50);
+            }
+        }
+        public static async Task UpdateAsteroids()
+        {
+            Random rng = new Random();
+            while (!gameover)
+            {
+                lock (_locker)
+                {
+                    meteorites.Add(new Entity{ CoordX = rng.Next(Console.WindowWidth), CoordY = 0});
+                    for (int i = 0; i < meteorites.Count; i++)
+                    {
+                        meteorites[i].CoordY += 1;
+                    }
+                    meteorites.ForEach(a =>
+                    {
+                        if (a.CoordY >= Console.WindowHeight)
+                        {
+                            // For score
+                        }
+                    });
+                    meteorites.RemoveAll(a => a.CoordY >= Console.WindowHeight);
+                    if (meteorites.Any(a => a.CoordX == spaceship.CoordX && a.CoordY == spaceship.CoordY))
+                    {
+                        spaceship.CoordX = 30;
+                        spaceship.CoordY = 29;
+                        meteorites.Clear();
+                    }
+                }
+                await Task.Delay(20);
             }
         }
     }
