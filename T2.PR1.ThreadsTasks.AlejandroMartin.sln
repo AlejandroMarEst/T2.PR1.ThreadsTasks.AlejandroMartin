@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35806.99 d17.13
+VisualStudioVersion = 17.13.35806.99
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "T2.PR1.Threads.AlejandroMartin", "T2.PR1.Threads.AlejandroMartin\T2.PR1.Threads.AlejandroMartin.csproj", "{2A68BE0B-A0E6-49E1-9EA9-63F76DE69FF4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "T2.PR1.Tasks.AlejandroMartin", "T2.PR1.Tasks.AlejandroMartin\T2.PR1.Tasks.AlejandroMartin.csproj", "{53B15957-7670-49F2-AA92-8ED6A57B59D8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{2A68BE0B-A0E6-49E1-9EA9-63F76DE69FF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A68BE0B-A0E6-49E1-9EA9-63F76DE69FF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2A68BE0B-A0E6-49E1-9EA9-63F76DE69FF4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53B15957-7670-49F2-AA92-8ED6A57B59D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53B15957-7670-49F2-AA92-8ED6A57B59D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53B15957-7670-49F2-AA92-8ED6A57B59D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53B15957-7670-49F2-AA92-8ED6A57B59D8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
