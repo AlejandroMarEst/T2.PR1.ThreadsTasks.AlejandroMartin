@@ -1,10 +1,13 @@
 ﻿using System;
+using CsvHelper;
 using System.Diagnostics;
+using System.Globalization;
 
 namespace T2.PR1.Threads.AlejandroMartin
 {
     class Program
     {
+        public static List<Records> Records = new List<Records>();
         public static readonly object ConsoleLocker = new object();
         public static Stopwatch SimulationTime = new Stopwatch();
         public static Random Rng = new Random();
@@ -21,11 +24,28 @@ namespace T2.PR1.Threads.AlejandroMartin
             Thread commensal3 = new Thread(() => Commensal(3));
             Thread commensal4 = new Thread(() => Commensal(4));
             Thread commensal5 = new Thread(() => Commensal(5));
-            commensal1.Start();
-            commensal2.Start();
-            commensal3.Start();
-            commensal4.Start();
-            commensal5.Start();
+            try
+            {
+                commensal1.Start();
+                commensal2.Start();
+                commensal3.Start();
+                commensal4.Start();
+                commensal5.Start();
+            } 
+            catch(Exception e) {
+                Console.WriteLine(e.Message);
+                commensal1.Interrupt();
+                commensal2.Interrupt();
+                commensal3.Interrupt();
+                commensal4.Interrupt();
+                commensal5.Interrupt();
+            }
+            commensal1.Join();
+            commensal2.Join();
+            commensal3.Join();
+            commensal4.Join();
+            commensal5.Join();
+            RecordResults();
         }
         private static void Commensal(int num)
         {
@@ -62,6 +82,12 @@ namespace T2.PR1.Threads.AlejandroMartin
                     throw new Exception($"Commensal {num} starved");
                 }
             }
+            Records.Add(new Records
+            {
+                Id = num,
+                MaxHunger = maxHunger,
+                TimesEaten = timesEaten
+            });
         }
 
         private static void Write(int num, ConsoleColor color, string msg)
@@ -118,6 +144,14 @@ namespace T2.PR1.Threads.AlejandroMartin
                 }
                 Write(num, ConsoleColor.DarkCyan, "Put down second chopstick");
             }
+        }
+        private static void RecordResults()
+        {
+            string path = "../../../CommensalsStats.csv";
+            using StreamWriter sw = new StreamWriter(path);
+            using var csvWriter = new CsvWriter(sw, CultureInfo.InvariantCulture);
+            Records.OrderBy(r => r.Id);
+            csvWriter.WriteRecords(Records);
         }
     }
 }
